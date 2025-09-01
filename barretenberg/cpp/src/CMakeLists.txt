@@ -23,14 +23,22 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
     endif()
 
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 18)
-        # We target clang18 and need this, eventually warning should be fixed or this will be unconditional.
-        add_compile_options(-Wno-vla-cxx-extension)
-        # This gets in the way of a partial object initialization (i.e. MyClass my_class{ .my_member = init_value })
-        add_compile_options(-Wno-missing-field-initializers)
-        # CLI11.hpp
-        add_compile_options(-Wno-deprecated-declarations)
-    endif()
+
+    # We target clang18 and need this, eventually warning should be fixed or this will be unconditional.
+    add_compile_options(-Wno-vla-cxx-extension)
+    # This gets in the way of a partial object initialization (i.e. MyClass my_class{ .my_member = init_value })
+    add_compile_options(-Wno-missing-field-initializers)
+    # CLI11.hpp
+    add_compile_options(-Wno-deprecated-declarations)
+
+    add_compile_options(
+        -Wno-error=vla-cxx-extension
+        -Wno-error=vla-extension
+        -Wno-error=vla
+        -Wno-vla-cxx-extension
+        -Wno-vla-extension
+        -Wno-vla
+    )
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
